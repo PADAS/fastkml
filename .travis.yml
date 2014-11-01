@@ -16,6 +16,7 @@ env:
 
 # command to install dependencies, e.g. pip install -r requirements.txt
 install:
+    - - pip install fastkml
     - pip install -r requirements.txt
     - if $LXML == true; then pip install lxml; fi
     # Python 2.6 uses the unittest2 testing package backported from Python
