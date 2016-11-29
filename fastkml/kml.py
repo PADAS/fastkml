@@ -119,7 +119,7 @@ class KML(object):
         # element, just without prefix.
         if not self.ns:
             root = etree.Element('%skml' % self.ns)
-            root.set('xmlns', config.KMLNS[1:-1])
+            root.set('xmlns', config.NS[1:-1])
         else:
             if config.LXML:
                 root = etree.Element(
@@ -147,21 +147,21 @@ class KML(object):
     def features(self):
         """ iterate over features """
         for feature in self._features:
-            if isinstance(feature, (Document, Folder, Placemark)):
+            if isinstance(feature, (Document, Folder, Placemark, NetworkLink)):
                 yield feature
             else:
                 raise TypeError(
                     "Features must be instances of "
-                    "(Document, Folder, Placemark)"
+                    "(Document, Folder, Placemark, NetworkLink)"
                 )
 
     def append(self, kmlobj):
         """ append a feature """
-        if isinstance(kmlobj, (Document, Folder, Placemark)):
+        if isinstance(kmlobj, (Document, Folder, Placemark, NetworkLink)):
             self._features.append(kmlobj)
         else:
             raise TypeError(
-                "Features must be instances of (Document, Folder, Placemark)")
+                "Features must be instances of (Document, Folder, Placemark, NetworkLink)")
 
 
 class _Feature(_BaseObject):
@@ -618,12 +618,12 @@ class _Container(_Feature):
     def features(self):
         """ iterate over features """
         for feature in self._features:
-            if isinstance(feature, (Folder, Placemark, Document)):
+            if isinstance(feature, (Folder, Placemark, Document, NetworkLink)):
                 yield feature
             else:
                 raise TypeError(
                     "Features must be instances of "
-                    "(Folder, Placemark, Document)"
+                    "(Folder, Placemark, Document, NetworkLink)"
                 )
 
     def etree_element(self):
@@ -634,12 +634,12 @@ class _Container(_Feature):
 
     def append(self, kmlobj):
         """ append a feature """
-        if isinstance(kmlobj, (Folder, Placemark, Document)):
+        if isinstance(kmlobj, (Folder, Placemark, Document, NetworkLink)):
             self._features.append(kmlobj)
         else:
             raise TypeError(
                 "Features must be instances of "
-                "(Folder, Placemark, Document)"
+                "(Folder, Placemark, Document, NetworkLink)"
             )
         assert(kmlobj != self)
 
@@ -1038,6 +1038,11 @@ class Folder(_Container):
         for document in documents:
             feature = Document(self.ns)
             feature.from_element(document)
+            self.append(feature)
+        links = element.findall('%sNetworkLink' % self.ns)
+        for link in links:
+            feature = NetworkLink(self.ns)
+            feature.from_element(link)
             self.append(feature)
 
 
@@ -1524,3 +1529,65 @@ class SchemaData(_XMLObject):
         simple_data = element.findall('%sSimpleData' % self.ns)
         for sd in simple_data:
             self.append_data(sd.get('name'), sd.text)
+
+
+class NetworkLink(_Feature):
+    __name__ = 'NetworkLink'
+    _nlink = None
+
+    def __init__(self, ns=None, id=None, name=None, description=None, styles=None, styleUrl=None):
+        super(NetworkLink, self).__init__(
+            ns, id, name, description, styles, styleUrl
+        )
+
+    @property
+    def link(self):
+        return self._nlink.href
+
+    @link.setter
+    def link(self, url):
+        if isinstance(url, basestring):
+            self._nlink = atom.Link(href=url)
+        elif isinstance(url, Link):
+            self._nlink = url
+        elif url is None:
+            self._nlink = None
+        else:
+            raise TypeError
+
+    def etree_element(self):
+        element = super(NetworkLink, self).etree_element()
+        if self._nlink is not None:
+            element.append(self._nlink.etree_element())
+        return element
+
+    def from_element(self, element):
+        super(_Feature, self).from_element(element)
+        link = element.find('Link')
+        if link is not None:
+            s = Link()
+            s.from_element(link)
+            self._nlink = s
+
+
+class Link(_XMLObject):
+    """ Represents a Link. """
+
+    __name__ = 'Link'
+
+    def __init__(self, ns=None, href=None):
+        super(Link, self).__init__(ns)
+
+        self.href = href
+
+    def etree_element(self):
+        element = super(Link, self).etree_element()
+        if self.href:
+            href = etree.SubElement(element, "%shref" % self.ns)
+            href.text = self.href
+#        element.set('href', self.href)
+        return element
+
+    def from_element(self, element):
+        super(Link, self).from_element(element)
+        self.href = element.get('href')
