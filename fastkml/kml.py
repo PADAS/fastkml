@@ -1563,7 +1563,17 @@ class NetworkLink(_Feature):
 
     def from_element(self, element):
         super(_Feature, self).from_element(element)
-        link = element.find('Link')
+        name = element.find('%sname' % self.ns)
+        if name is not None:
+            self.name = name.text
+        id = element.find('%sid' % self.ns)
+        if id is not None:
+            self.id = id.text
+        visibility = element.find('%svisibility' % self.ns)
+        if visibility is not None:
+            self.visibility = visibility.text
+
+        link = element.find('%sLink' % self.ns)
         if link is not None:
             s = Link()
             s.from_element(link)
@@ -1591,3 +1601,6 @@ class Link(_XMLObject):
     def from_element(self, element):
         super(Link, self).from_element(element)
         self.href = element.get('href')
+        href = element.find('%shref' % self.ns)
+        if href is not None and not self.href:
+            self.href = href.text
