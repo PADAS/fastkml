@@ -38,3 +38,6 @@ nosetests.xml
 
 # Sphinx
 _build/
+
+.idea
+*.swp

@@ -110,6 +110,11 @@ class KML(object):
                 feature = Placemark(ns)
                 feature.from_element(placemark)
                 self.append(feature)
+            networklinks = element.findall('%sNetworkLink' % ns)
+            for networklink in networklinks:
+                feature = NetworkLink(ns)
+                feature.from_element(networklink)
+                self.append(feature)
         else:
             raise TypeError
 
