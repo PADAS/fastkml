@@ -343,6 +343,10 @@ class Geometry(_BaseObject):
             return Point(coords[0])
         if element.tag == ('%sLineString' % self.ns):
             coords = self._get_coordinates(element)
+            # issue seen with Garmin kml feeds with one coordinate linestrings
+            if len(coords) < 2:
+                logger.warn('LineStrings must have at least 2 coordinate tuples')
+                return
             self._get_geometry_spec(element)
             return LineString(coords)
         if element.tag == ('%sPolygon' % self.ns):
