@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.3.0 (unreleased)
+------------------
+
+- Improve README [Harshdev625]
+- Fix base class of some classes from _XMLObject to _BaseObject [hirohira9119]
+
+
 1.2.0 (2025/10/01)
 ------------------
 
