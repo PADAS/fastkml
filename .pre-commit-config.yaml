@@ -1,0 +1,88 @@
+---
+default_language_version:
+  python: python3.12
+repos:
+  - repo: https://github.com/pre-commit-ci/pre-commit-ci-config
+    rev: v1.6.1
+    hooks:
+      - id: check-pre-commit-ci-config
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: check-vcs-permalinks
+      - id: check-xml
+      - id: check-yaml
+      - id: debug-statements
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: name-tests-test
+        exclude: (?x)^(
+                tests/base.py|
+                tests/hypothesis/common.py|
+                tests/hypothesis/strategies.py
+            )$
+      - id: no-commit-to-branch
+      - id: pretty-format-json
+      - id: requirements-txt-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/kieran-ryan/pyprojectsort
+    rev: v0.4.0
+    hooks:
+      - id: pyprojectsort
+  - repo: https://github.com/abravalheri/validate-pyproject
+    rev: v0.24.1
+    hooks:
+      - id: validate-pyproject
+  - repo: https://github.com/MarcoGorelli/absolufy-imports
+    rev: v0.3.1
+    hooks:
+      - id: absolufy-imports
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: 'v0.14.0'
+    hooks:
+      - id: ruff-check
+      - id: ruff-format
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks:
+      - id: python-use-type-annotations
+      - id: python-check-blanket-type-ignore
+      - id: python-check-mock-methods
+      - id: python-no-log-warn
+      - id: python-use-type-annotations
+      - id: rst-backticks
+      - id: rst-directive-colons
+      - id: rst-inline-touching-normal
+      - id: text-unicode-replacement-char
+  - repo: https://github.com/sphinx-contrib/sphinx-lint
+    rev: "v1.0.0"
+    hooks:
+      - id: sphinx-lint
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.18.2
+    hooks:
+      - id: mypy
+        additional_dependencies: [pygeoif>=1.4, arrow, pytest, hypothesis]
+  - repo: https://github.com/adamchainz/blacken-docs
+    rev: "1.20.0"
+    hooks:
+      - id: blacken-docs
+  - repo: https://github.com/crate-ci/typos
+    rev: v1
+    hooks:
+      - id: typos
+        exclude_types: ['csv']
+  - repo: https://github.com/rohaquinlop/complexipy-pre-commit
+    rev: v3.3.0
+    hooks:
+      - id: complexipy
+
+  # - repo: https://github.com/woodruffw/zizmor-pre-commit
+  #   rev: v1.0.1
+  #   hooks:
+  #     - id: zizmor
+...

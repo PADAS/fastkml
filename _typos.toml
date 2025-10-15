@@ -1,0 +1,11 @@
+[default]
+extend-ignore-identifiers-re = [
+    "04AFE6060F147CE66FBD",
+]
+
+[default.extend-words]
+lod = "lod"
+Lod = "Lod"
+
+[files]
+extend-exclude = ["tests/ogc_conformance/data/kml/*.kml"]

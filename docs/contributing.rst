@@ -11,71 +11,106 @@ especially in the following ways:
 * Commenting on open issues and pull requests
 * Suggesting new features
 
+Setting Up Your Environment
+---------------------------
 
-Pull Requests
--------------
+Fork the repository and clone your fork to your local machine:
 
-Start by submitting a pull request on GitHub against the `master` branch of the
-repository. Your pull request should provide a good description of the change
-you are making, and/or the bug that you are fixing. This will then trigger a
-build in `Travis-CI`_ where your contribution will be tested to verify it does
-not break existing functionality.
+.. code-block:: bash
 
-.. _travis-ci: https://travis-ci.org/cleder/fastkml
+    git clone https://github.com/yourusername/fastkml.git
+    cd fastkml
+    git checkout develop
 
+Next, set up a virtual environment. This helps to manage dependencies and avoid conflicts:
 
-Running Tests Locally
----------------------
+.. code-block:: bash
 
-You can make use of tox_ >= 1.8 to test the entire matrix of options:
+    python3 -m venv .venv
+    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 
-* with / without lxml
-* pygeoif vs shapely
-* py26,py27,py32,py33,py34
+Then, install the required packages:
 
-as well as pep8 style checking in a single call (this approximates what happens
-when the package is run through Travis-CI)
+.. code-block:: bash
 
-.. code-block:: python
+    pip install -e ".[dev]"
 
-    # Install tox
-    pip install tox>=1.8
+Install the ``pre-commit`` hook with:
 
-    # Run tox
-    tox
+.. code-block:: bash
 
-    # Or optionally
-    # (to skip tests for Python versions you do not have installed)
-    tox --skip-missing-interpreters
+    pre-commit install
 
-This will run through all of the tests and produce an output similar to::
+and check the code with:
 
-    ______________________________________________________ summary ______________________________________________________
-    SKIPPED:  py26: InterpreterNotFound: python2.6
-      py27: commands succeeded
-    SKIPPED:  py32: InterpreterNotFound: python3.2
-    SKIPPED:  py33: InterpreterNotFound: python3.3
-      py34: commands succeeded
-    SKIPPED:  py26-shapely: InterpreterNotFound: python2.6
-    SKIPPED:  py26-lxml: InterpreterNotFound: python2.6
-      py27-shapely: commands succeeded
-      py27-lxml: commands succeeded
-    SKIPPED:  py32-shapely: InterpreterNotFound: python3.2
-    SKIPPED:  py32-lxml: InterpreterNotFound: python3.2
-    SKIPPED:  py33-shapely: InterpreterNotFound: python3.3
-    SKIPPED:  py33-lxml: InterpreterNotFound: python3.3
-      py34-shapely: commands succeeded
-      py34-lxml: commands succeeded
-    SKIPPED:  py26-shapely-lxml: InterpreterNotFound: python2.6
-      py27-shapely-lxml: commands succeeded
-    SKIPPED:  py32-shapely-lxml: InterpreterNotFound: python3.2
-    SKIPPED:  py33-shapely-lxml: InterpreterNotFound: python3.3
-      py34-shapely-lxml: commands succeeded
-      pep8: commands succeeded
-      congratulations :)
+.. code-block:: bash
 
-You are primarily looking for the ``congratulations :)`` line at the bottom,
-signifying that the code is working as expected on all configurations
-available.
+    pre-commit run --all-files
 
-.. _tox: https://pypi.python.org/pypi/tox
+Running the Tests
+-----------------
+
+To run the tests, simply use:
+
+.. code-block:: bash
+
+    pytest
+
+You can also run the tests with `coverage <https://coverage.readthedocs.io/>`_
+to see which lines are covered by the tests.
+This is useful for writing new tests to cover any uncovered lines:
+
+.. code-block:: bash
+
+    pytest  --cov=fastkml --cov-report=term
+
+To get a report on the individual lines that are not covered, use the
+``--cov-report=term-missing`` option, or generate an HTML report with
+``--cov-report=html``.
+Some editor extensions can also show the coverage directly in the editor, notably
+`coverage-gutter <https://marketplace.visualstudio.com/items?itemName=ryanluker.vscode-coverage-gutters>`_
+for VSCode, which needs the output to be in the ``xml`` format produced with
+``--cov-report=xml``.
+
+Building the Documentation
+-------------------------
+
+To build and preview the documentation locally:
+
+1. **Install documentation dependencies** (if not already installed):
+
+    .. code-block:: bash
+
+        pip install -r docs/requirements.txt
+
+2. **Build the HTML documentation**:
+
+    .. code-block:: bash
+
+        cd docs
+        make html
+
+    The generated HTML files will be in `docs/_build/html`. Open `index.html` in your browser to preview.
+
+If you encounter issues, ensure you have Sphinx and the required extensions installed, and that your virtual environment is activated.
+
+Submitting Changes
+------------------
+
+Once you've made your changes and ensured that all tests pass, you can submit a pull request:
+
+Tips:
+
+* Write clear and concise commit messages.
+* Follow the existing code style and conventions.
+* Reference any related issues in your pull request description.
+* Ensure your changes are well-tested.
+* Commit to the ``develop`` branch, not ``main``.
+* Avoid large, monolithic pull requests; smaller, focused PRs are easier to review.
+* Commit often with logical chunks of work.
+* Open a draft pull request early to get feedback.
+* Be patient and responsive to feedback on your pull request.
+* Celebrate your contribution to the project! Add a line to the ``HISTORY.rst`` file
+  in the "unreleased" section, following the existing format.
+
+We appreciate your contributions and look forward to collaborating with you!
