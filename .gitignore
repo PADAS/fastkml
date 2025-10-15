@@ -23,10 +23,15 @@ setup.cfg
 # Installer logs
 pip-log.txt
 
-# Unit test / coverage reports
+# Unit/static test / coverage reports
 .coverage
+coverage.xml
 .tox
+.pytest_cache/
 nosetests.xml
+.ruff_cache/
+monkeytype.sqlite3
+.hypothesis/
 
 # Translations
 *.mo
@@ -39,5 +44,20 @@ nosetests.xml
 # Sphinx
 _build/
 
-.idea
-*.swp
+# virtual environments
+.venv
+venv
+
+# editors
+.vscode/
+.idea/
+
+# typing
+.mypy_cache/
+.pyre/
+.watchmanconfig
+.pytype/
+
+
+# misc
+.dccache

@@ -1,68 +1,101 @@
 Introduction
 ============
 
+.. inclusion-marker-do-not-remove
+
+KML is an XML geospatial data format and an OGC_ standard that deserves a canonical
+python implementation.
+
 Fastkml is a library to read, write and manipulate KML files. It aims to keep
 it simple and fast (using lxml_ if available). Fast refers to the time you
 spend to write and read KML files as well as the time you spend to get
-aquainted to the library or to create KML objects. It aims to provide all of
-the functionality that KML clients such as `OpenLayers
-<http://openlayers.org/>`_, `Google Maps <http://maps.google.com/>`_, and
-`Google Earth <http://earth.google.com/>`_ provides.
+acquainted to the library or to create KML objects. It aims to provide all of
+the functionality that KML clients such as `Marble <https://marble.kde.org/>`_,
+`NASA WorldWind <https://github.com/NASAWorldWind>`_,
+`Cesium JS <https://cesium.com/>`_, `OpenLayers <https://openlayers.org/>`_,
+`Google Maps <http://maps.google.com/>`_, and
+`Google Earth <http://earth.google.com/>`_ support.
 
+For more details about the KML Specification, check out the `KML Reference
+<https://developers.google.com/kml/documentation/kmlreference>`_ on the Google
+developers site.
 
-Geometries are handled as pygeoif_ or, if installed, shapely_ objects.
+Geometries are handled as pygeoif_ objects, which are compatible with any geometry that
+implements the ``__geo_interface__`` protocol, such as shapely_.
 
-.. _pygeoif: http://pypi.python.org/pypi/pygeoif/
-.. _shapely: http://pypi.python.org/pypi/Shapely
-.. _lxml: https://pypi.python.org/pypi/lxml
-.. _dateutils: https://pypi.python.org/pypi/dateutils
-.. _pip: https://pypi.python.org/pypi/pip
+Fastkml is tested on `CPython <https://python.org>`_, `PyPy <https://www.pypy.org/>`_ and
+`GraalPy <https://www.graalvm.org/python/>`_, but it should work on alternative Python implementations
+(that implement the language specification *>=3.9*) as well.
 
-Fastkml is continually tested with *Travis CI*:
+|test| |hypothesis| |cov| |black| |mypy| |commit|
 
-.. image:: https://api.travis-ci.org/cleder/fastkml.png
-    :target: https://travis-ci.org/cleder/fastkml
-    :alt: Tests
+.. |test| image:: https://github.com/cleder/fastkml/actions/workflows/run-all-tests.yml/badge.svg?branch=main
+    :target: https://github.com/cleder/fastkml/actions/workflows/run-all-tests.yml
+    :alt: Test
 
-.. image:: https://coveralls.io/repos/cleder/fastkml/badge.png?branch=master
-    :target: https://coveralls.io/r/cleder/fastkml?branch=master
-    :alt: coveralls.io
+.. |hypothesis| image:: https://img.shields.io/badge/hypothesis-tested-brightgreen.svg
+   :alt: Tested with Hypothesis
+   :target: https://hypothesis.readthedocs.io
 
-.. image:: http://codecov.io/github/cleder/fastkml/coverage.svg?branch=master
-    :target: http://codecov.io/github/cleder/fastkml?branch=master
+.. |cov| image:: https://codecov.io/gh/cleder/fastkml/branch/main/graph/badge.svg?token=VIuhPHq0ow
+    :target: http://codecov.io/github/cleder/fastkml?branch=main
     :alt: codecov.io
 
-Is Maintained and documented:
+.. |black| image:: https://img.shields.io/badge/code_style-black-000000.svg
+    :target: https://github.com/psf/black
+    :alt: Black
 
-.. image:: https://img.shields.io/pypi/v/fastkml.svg
+.. |mypy| image:: https://img.shields.io/badge/type_checker-mypy-blue
+    :target: http://mypy-lang.org/
+    :alt: Mypy
+
+.. |commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit
+   :target: https://github.com/pre-commit/pre-commit
+   :alt: pre-commit
+
+Is maintained and documented:
+
+|pypi| |conda-forge| |status| |license| |doc| |stats| |pyversion| |pyimpl| |dependencies| |downloads|
+
+.. |pypi| image:: https://img.shields.io/pypi/v/fastkml.svg
     :target: https://pypi.python.org/pypi/fastkml
     :alt: Latest PyPI version
 
-.. image:: https://img.shields.io/pypi/status/fastkml.svg
+.. |status| image:: https://img.shields.io/pypi/status/fastkml.svg
     :target: https://pypi.python.org/pypi/fastkml/
     :alt: Development Status
 
-.. image:: https://readthedocs.org/projects/fastkml/badge/
+.. |license| image:: https://img.shields.io/pypi/l/fastkml
+    :target: https://www.gnu.org/licenses/lgpl-3.0.en.html
+    :alt: LGPL - License
+
+.. |doc| image:: https://readthedocs.org/projects/fastkml/badge/
     :target: https://fastkml.readthedocs.org/
     :alt: Documentation
 
-.. image:: https://badge.waffle.io/cleder/fastkml.png?label=ready&title=Ready
-    :target: https://waffle.io/cleder/fastkml
-    :alt: 'Stories in Ready'
-
-.. image:: https://www.openhub.net/p/fastkml/widgets/project_thin_badge.gif
+.. |stats| image:: https://www.openhub.net/p/fastkml/widgets/project_thin_badge.gif
     :target: https://www.openhub.net/p/fastkml
     :alt: Statistics from OpenHub
 
-Supports python 2 and 3:
-
-.. image:: https://img.shields.io/pypi/pyversions/fastkml.svg
+.. |pyversion| image:: https://img.shields.io/pypi/pyversions/fastkml.svg
     :target: https://pypi.python.org/pypi/fastkml/
     :alt: Supported Python versions
 
-.. image:: https://img.shields.io/pypi/implementation/fastkml.svg
+.. |pyimpl| image:: https://img.shields.io/pypi/implementation/fastkml.svg
     :target: https://pypi.python.org/pypi/fastkml/
     :alt: Supported Python implementations
+
+.. |dependencies| image:: https://img.shields.io/librariesio/release/pypi/fastkml
+    :target: https://libraries.io/pypi/fastkml
+    :alt: Libraries.io dependency status for latest release
+
+.. |downloads| image:: https://static.pepy.tech/badge/fastkml/month
+    :target: https://pepy.tech/project/fastkml
+    :alt: Downloads
+
+.. |conda-forge| image:: https://img.shields.io/conda/vn/conda-forge/fastkml.svg
+    :target: https://anaconda.org/conda-forge/fastkml
+    :alt: Conda-Forge
 
 Documentation
 =============
@@ -76,44 +109,33 @@ with the improvement.
 Install
 ========
 
-You can install the package with ``pip install fastkml`` or ``easy_install
-fastkml`` which should also pull in all requirements.
+You can install the package with ``pip install fastkml`` which will pull in all requirements.
 
 Requirements
 -------------
 
 * pygeoif_
-* dateutils_
+* arrow_
 
 Optional
 ---------
 
-* lxml_
-* shapely_
+* lxml_:
 
-You can install all of the requirements for working with FastKML by using
-pip_::
+.. code-block:: bash
 
-    pip install -r requirements.txt
-
-.. note::
-
-    Shapely_ requires that libgeos be installed on your system. ``apt-get
-    install libgeos-dev`` will install these requirements for you on Debian-
-    based systems.
-
+    pip install "fastkml[lxml]"
 
 Limitations
 ===========
 
-*Tesselate*, *Extrude* and *Altitude Mode* are assigned to a Geometry or
-Geometry collection (MultiGeometry). You cannot assign different values of
-*Tesselate*, *Extrude* or *Altitude Mode* on parts of a MultiGeometry.
-
 Currently, the only major feature missing for the full Google Earth experience
 is the `gx extension
 <https://developers.google.com/kml/documentation/kmlreference#kmlextensions>`_.
-This will most likely be added after the 1.0 version release.
+Please submit a PR with the features you'd like to see implemented.
 
-You can find the complete list of current issues on `GitHub
-<https://github.com/cleder/fastkml/issues>`_.
+.. _pygeoif: https://pypi.python.org/pypi/pygeoif/
+.. _lxml: https://pypi.python.org/pypi/lxml
+.. _arrow: https://pypi.python.org/pypi/arrow
+.. _OGC: https://www.ogc.org/standard/kml/
+.. _shapely: https://shapely.readthedocs.io/
